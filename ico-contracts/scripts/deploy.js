@@ -9,10 +9,15 @@ async function main() {
 
 	console.log('Deploying contracts with the account:', deployer.address)
 
-	const NonToken = await ethers.getContractFactory('NamToken')
-	const token = await NonToken.deploy()
+	const NAM = await ethers.getContractFactory('NamToken')
+	// Deploying NAM Token
+	const token = await NAM.deploy()
 
+	// Minting the initial pool.
 	await token.mint(ToWei(1000000))
+
+	const MasterChef = await ethers.getContractFactory('MasterChef')
+	const masterchef = await MasterChef.deploy()
 
 	console.log('Token address:', token.address)
 }
