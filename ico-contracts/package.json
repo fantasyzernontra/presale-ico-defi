@@ -1,20 +1,24 @@
 {
-  "name": "ico-contracts",
-  "version": "1.0.0",
-  "description": "Proof of concept on ICO Defi Token",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "author": "Non Nontra & Passwat Wetchasart",
-  "license": "ISC",
-  "dependencies": {
-    "@nomiclabs/hardhat-ethers": "^2.0.2",
-    "@nomiclabs/hardhat-waffle": "^2.0.1",
-    "@openzeppelin/contracts": "^4.3.0",
-    "chai": "^4.3.4",
-    "ethereum-waffle": "^3.4.0",
-    "ethers": "^5.4.5",
-    "hardhat": "^2.6.1"
-  }
+	"name": "ico-contracts",
+	"version": "1.0.0",
+	"description": "Proof of concept on ICO Defi Token",
+	"main": "index.js",
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1",
+		"compile": "hardhat compile",
+		"deploy": "hardhat run scripts/deploy.js --network testnet"
+	},
+	"author": "Non Nontra & Passwat Wetchasart",
+	"license": "ISC",
+	"dependencies": {
+		"@ethersproject/bignumber": "^5.4.1",
+		"@nomiclabs/hardhat-ethers": "^2.0.2",
+		"@nomiclabs/hardhat-waffle": "^2.0.1",
+		"@openzeppelin/contracts": "^4.3.0",
+		"chai": "^4.3.4",
+		"dotenv": "^10.0.0",
+		"ethereum-waffle": "^3.4.0",
+		"ethers": "^5.4.5",
+		"hardhat": "^2.6.1"
+	}
 }
