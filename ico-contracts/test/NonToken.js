@@ -31,12 +31,16 @@ describe('NON Token', () => {
 		await token.transfer(addr1.address, 50)
 		expect(await token.balanceOf(addr1.address)).to.equal(50)
 
-		// Approve transaction
-		await token.connect(addr1).approve(owner.address, 50)
-
 		// Transfer 50 NON Tokens from addr1 to addr2
-		await token.connect(owner).transferFrom(addr1.address, addr2.address, 50)
+		await token.connect(addr1).transfer(addr2.address, 50)
 		expect(await token.balanceOf(addr1.address)).to.equal(0)
 		expect(await token.balanceOf(addr2.address)).to.equal(50)
 	})
+
+	// it('', async () => {
+	// 	// Approve transaction
+	// 	await token.connect(addr1).approve(owner.address, 0)
+
+	// 	await token.connect(owner).transferFrom(addr1.address, addr2.address, 0)
+	// })
 })
