@@ -40,11 +40,11 @@ interface IBEP20 {
         uint256 _value
     ) external returns (bool);
 
-    /// @notice Caller's account approves `_spender` to spend `_value` tokens.\
+    /// @notice Caller's account approves `_spender` to spend `_value` tokens.
     /// @param `_spender` address of the spender
     /// @param `_value` amount of tokens
     /// @return Successful Status
-    function approve(address _spender, address _value) external returns (bool);
+    function approve(address _spender, uint256 _value) external returns (bool);
 
     /// @notice Returns amount of remaining tokens allowed to spent.
     /// @param `_owner` address of the caller's account

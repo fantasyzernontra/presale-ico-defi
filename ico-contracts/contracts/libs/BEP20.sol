@@ -13,6 +13,8 @@ abstract contract BEP20 is IBEP20, Ownable {
 
     mapping(address => uint256) private _balances;
 
+    mapping(address => mapping(address => uint256)) private _allowances;
+
     uint256 private _totalSupply;
 
     string private _name;
@@ -54,12 +56,75 @@ abstract contract BEP20 is IBEP20, Ownable {
         override
         returns (bool)
     {
-        _transfer(msg.sender, recipient, amount);
+        _transfer(_msgSender(), recipient, amount);
+        emit Transfer(_msgSender(), recipient, amount);
+        return true;
+    }
+
+    function transferFrom(
+        address _from,
+        address _to,
+        uint256 _value
+    ) public override returns (bool) {
+        _transfer(_from, _to, _value);
+        _approve(
+            _from,
+            _msgSender(),
+            _allowances[_msgSender()][_msgSender()].sub(
+                _value,
+                "BEP20: transfer amount exceed allowance"
+            )
+        );
         return true;
     }
 
     function mint(uint256 amount) public returns (bool) {
-        _mint(msg.sender, amount);
+        _mint(_msgSender(), amount);
+        return true;
+    }
+
+    function allowance(address _owner, address _spender)
+        public
+        view
+        override
+        returns (uint256)
+    {
+        return _allowances[_owner][_spender];
+    }
+
+    function approve(address _spender, uint256 _amount)
+        public
+        override
+        returns (bool)
+    {
+        _approve(_msgSender(), _spender, _amount);
+        return true;
+    }
+
+    function increaseAllowance(address _spender, uint256 addedValue)
+        public
+        returns (bool)
+    {
+        _approve(
+            _msgSender(),
+            _spender,
+            _allowances[_msgSender()][_spender].add(addedValue)
+        );
+        return true;
+    }
+
+    function decreaseAllowance(address _spender, uint256 subtractedValue)
+        public
+        returns (bool)
+    {
+        _approve(
+            _msgSender(),
+            _spender,
+            _allowances[_msgSender()][_spender].sub(
+                subtractedValue,
+                "BEP20: decreased allowance below zero"
+            )
+        );
         return true;
     }
 
@@ -80,5 +145,17 @@ abstract contract BEP20 is IBEP20, Ownable {
         _totalSupply = _totalSupply.add(amount);
         _balances[account] = _balances[account].add(amount);
         emit Transfer(address(0), account, amount);
+    }
+
+    function _approve(
+        address _owner,
+        address _spender,
+        uint256 _amount
+    ) internal virtual {
+        require(_owner != address(0), "BEP20: approve from the zero address");
+        require(_spender != address(0), "BEP20: approve from the zero address");
+
+        _allowances[_owner][_spender] = _amount;
+        emit Approval(_owner, _spender, _amount);
     }
 }
