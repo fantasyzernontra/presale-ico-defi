@@ -4,9 +4,9 @@
 	"description": "Proof of concept on ICO Defi Token",
 	"main": "index.js",
 	"scripts": {
-		"test": "echo \"Error: no test specified\" && exit 1",
+		"test": "hardhat test",
 		"compile": "hardhat compile",
-		"deploy": "hardhat run scripts/deploy.js --network testnet"
+		"deploy": "hardhat test && hardhat run scripts/deploy.js --network testnet"
 	},
 	"author": "Non Nontra & Passwat Wetchasart",
 	"license": "ISC",

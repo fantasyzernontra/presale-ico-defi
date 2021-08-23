@@ -70,7 +70,7 @@ abstract contract BEP20 is IBEP20, Ownable {
         _approve(
             _from,
             _msgSender(),
-            _allowances[_msgSender()][_msgSender()].sub(
+            _allowances[_from][_msgSender()].sub(
                 _value,
                 "BEP20: transfer amount exceed allowance"
             )
@@ -80,6 +80,14 @@ abstract contract BEP20 is IBEP20, Ownable {
 
     function mint(uint256 amount) public returns (bool) {
         _mint(_msgSender(), amount);
+        return true;
+    }
+
+    function presaleMint(address _beneficiary, uint256 _amount)
+        public
+        returns (bool)
+    {
+        _mint(_beneficiary, _amount);
         return true;
     }
 
