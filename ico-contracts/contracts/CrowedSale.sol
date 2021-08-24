@@ -3,11 +3,14 @@
 pragma solidity ^0.8.0;
 
 import "./NonToken.sol";
+import "./interfaces/IBEP20.sol";
+import "./interfaces/SafeBEP20.sol";
 import "@openzeppelin/contracts/utils/math/SafeMath.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/utils/Address.sol";
 
 contract CrowedSale is Ownable {
+    using SafeBEP20 for IBEP20;
     using SafeMath for uint256;
     using Address for address;
 
@@ -27,7 +30,7 @@ contract CrowedSale is Ownable {
     }
 
     // NAM Token
-    NonToken private non;
+    IBEP20 public non;
     // Crowed sale info.
     CrowedSaleInfo public info;
     // Amount of sold tokens
@@ -48,6 +51,7 @@ contract CrowedSale is Ownable {
 
     constructor(
         address payable _fund,
+        IBEP20 _token,
         uint256 _cap,
         uint256 _price
     ) {
@@ -61,6 +65,7 @@ contract CrowedSale is Ownable {
         });
 
         info = _info;
+        non = _token;
     }
 
     function createTokenContract() internal returns (NonToken) {
@@ -81,15 +86,15 @@ contract CrowedSale is Ownable {
         // Amount of tokens
         uint256 tokensAmount = SafeMath.div(purchaseAmount, info.price);
 
-        address payable sender = payable(msg.sender);
+        address payable sender = payable(_msgSender());
 
         if (excessAmount > 0) {
             sender.transfer(excessAmount);
         }
 
         sold = sold.add(tokensAmount);
-        non.presaleMint(_msgSender(), tokensAmount);
-        forwardFunds(purchaseAmount);
+        non.transfer(_msgSender(), purchaseAmount);
+        info.fund.transfer(purchaseAmount);
         emit CrowedSalePurchase(_msgSender(), tokensAmount);
         return true;
     }
