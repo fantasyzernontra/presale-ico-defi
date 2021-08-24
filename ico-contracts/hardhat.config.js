@@ -8,7 +8,7 @@ module.exports = {
 	networks: {
 		testnet: {
 			url: 'https://data-seed-prebsc-1-s1.binance.org:8545/',
-			accounts: [process.env.mnemonic],
+			accounts: [process.env.MNEMONIC],
 			gas: 2100000,
 		},
 	},
