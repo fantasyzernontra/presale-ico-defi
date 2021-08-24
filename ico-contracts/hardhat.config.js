@@ -9,6 +9,7 @@ module.exports = {
 		testnet: {
 			url: 'https://data-seed-prebsc-1-s1.binance.org:8545/',
 			accounts: [process.env.mnemonic],
+			gas: 2100000,
 		},
 	},
 	solidity: '0.8.0',

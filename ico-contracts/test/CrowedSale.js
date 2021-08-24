@@ -22,6 +22,8 @@ beforeEach(async () => {
 
 	CrowedSaleContract = await ethers.getContractFactory('CrowedSale')
 	crowedSale = await CrowedSaleContract.deploy(addr1.address, token.address, ToWei(TOKEN_CAP), ToWei(PRICE))
+	
+	await token.connect
 
 	// Transfers ownership of NON Token to Crowed Sale.
 	await token.transferOwnership(crowedSale.address)

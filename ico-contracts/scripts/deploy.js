@@ -1,23 +1,32 @@
 const { ToWei } = require('../utils/useToWei')
 
-const TOKEN_CAP = 150000
-const FUND_ADDRESS = '0x56087c947475DF3200bCB53768236D0F1d788B36'
-const PRICE = ToWei(0.25)
-
 async function main() {
 	const [deployer] = await ethers.getSigners()
+	const { HARDHAT_NETWORK } = process.env
+
+	const TOKEN_CAP = HARDHAT_NETWORK === 'mainnet' ? process.env.TOKEN_CAP : '120000'
+	const FUND_ADDRESS =
+		HARDHAT_NETWORK === 'mainnet' ? process.env.FUND_ADDRESS : '0x56087c947475DF3200bCB53768236D0F1d788B36'
+	const PRICE = HARDHAT_NETWORK === 'mainnet' ? process.env.PRICE : '0.25'
 
 	console.log('Deploying contracts with the account:', deployer.address)
+	console.log('Remaing account balance: ', (await deployer.getBalance()).toString())
 
 	const NON = await ethers.getContractFactory('NonToken')
 	// Deploying NON Token
 	const token = await NON.deploy()
 
-	// Minting the initial pool.
-	await token.mint(ToWei(1000000))
-
 	const CrowedSale = await ethers.getContractFactory('CrowedSale')
-	const crowedSaleContract = await CrowedSale.deploy(FUND_ADDRESS, TOKEN_CAP, PRICE)
+	const crowedSaleContract = await CrowedSale.deploy(FUND_ADDRESS, token.address, ToWei(TOKEN_CAP), ToWei(PRICE))
+
+	// Transfers an ownership of NON Tokens to Crowed Sale contract.
+	await token.transferOwnership(crowedSaleContract.address)
+
+	// Minting the initial pool.
+	await token.mint(ToWei(TOKEN_CAP))
+
+	// Transfers NON Tokens to Crowed Sale's balance
+	await token.transfer(crowedSaleContract.address, ToWei(TOKEN_CAP))
 
 	console.table({
 		NON_TOKEN: token.address,
