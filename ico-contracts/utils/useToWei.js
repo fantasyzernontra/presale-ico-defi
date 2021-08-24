@@ -1,7 +1,7 @@
-const { BigNumber } = require('@ethersproject/bignumber')
+const { ethers } = require('hardhat')
 
 module.exports = {
 	ToWei: (value) => {
-		return BigNumber.from(value).mul(BigNumber.from(String(10 ** 18)))
+		return ethers.utils.parseUnits(value, 18)
 	},
 }

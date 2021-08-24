@@ -1,12 +1,10 @@
 const { expect } = require('chai')
-const assert = require('assert')
 
 const { ToWei } = require('../utils/useToWei')
-const { BigNumber } = require('@ethersproject/bignumber')
 
 let NonToken
 let token
-const totalSupply = 1000000
+const totalSupply = "1000000"
 
 beforeEach(async () => {
 	NonToken = await ethers.getContractFactory('NonToken')
@@ -15,7 +13,7 @@ beforeEach(async () => {
 
 describe('NON Token', () => {
 	it('Should deploy NON Token contract successful', async () => {
-		assert(token.address)
+		expect(token.address)
 	})
 
 	it('Should mint NON Token with correct given total supply', async () => {
@@ -25,7 +23,7 @@ describe('NON Token', () => {
 
 	it('Should transfer NON Token between accounts', async () => {
 		const [owner, addr1, addr2] = await ethers.getSigners()
-		await token.mint(ToWei(1000))
+		await token.mint(ToWei("1000"))
 
 		// Transfer 50 NON Tokens from owner to addr1
 		await token.transfer(addr1.address, 50)
