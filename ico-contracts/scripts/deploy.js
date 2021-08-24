@@ -1,25 +1,28 @@
-const { BigNumber } = require('@ethersproject/bignumber')
+const { ToWei } = require('../utils/useToWei')
 
-function ToWei(value) {
-	return BigNumber.from(value).mul(BigNumber.from(String(10 ** 18)))
-}
+const TOKEN_CAP = 150000
+const FUND_ADDRESS = '0x56087c947475DF3200bCB53768236D0F1d788B36'
+const PRICE = ToWei(0.25)
 
 async function main() {
 	const [deployer] = await ethers.getSigners()
 
 	console.log('Deploying contracts with the account:', deployer.address)
 
-	const NAM = await ethers.getContractFactory('NamToken')
-	// Deploying NAM Token
-	const token = await NAM.deploy()
+	const NON = await ethers.getContractFactory('NonToken')
+	// Deploying NON Token
+	const token = await NON.deploy()
 
 	// Minting the initial pool.
 	await token.mint(ToWei(1000000))
 
-	const MasterChef = await ethers.getContractFactory('MasterChef')
-	const masterchef = await MasterChef.deploy()
+	const CrowedSale = await ethers.getContractFactory('CrowedSale')
+	const crowedSaleContract = await CrowedSale.deploy(FUND_ADDRESS, TOKEN_CAP, PRICE)
 
-	console.log('Token address:', token.address)
+	console.table({
+		NON_TOKEN: token.address,
+		CROWED_SALE: crowedSaleContract.address,
+	})
 }
 
 main()
