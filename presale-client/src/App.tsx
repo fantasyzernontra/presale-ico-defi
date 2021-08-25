@@ -1,26 +1,31 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+// Components
+import React, { lazy } from 'react'
+import SuspenseWithChunkError from './components/SuspenseWithChunkError'
+import Spinner from './components/Loader/Spinner'
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+// Style Component
+import GlobalStyle from './styles/Global'
+
+// State and Function
+import { Router, Redirect, Route, Switch } from 'react-router-dom'
+import history from './routerHistory'
+
+// Views
+const Home = lazy(() => import('./views/home'))
+const Presale = lazy(() => import('./views/pre-sale'))
+
+const App: React.FC = () => {
+	return (
+		<Router history={history}>
+			<GlobalStyle />
+			<SuspenseWithChunkError fallback={<Spinner />}>
+				<Switch>
+					<Route path='/' exact component={Home} />
+					<Route path='/pre-sale' component={Presale} />
+				</Switch>
+			</SuspenseWithChunkError>
+		</Router>
+	)
 }
 
-export default App;
+export default React.memo(App)
