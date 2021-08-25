@@ -7,12 +7,13 @@ import Spinner from './components/Loader/Spinner'
 import GlobalStyle from './styles/Global'
 
 // State and Function
-import { Router, Redirect, Route, Switch } from 'react-router-dom'
+import { Router, Route, Switch } from 'react-router-dom'
 import history from './routerHistory'
 
 // Views
 const Home = lazy(() => import('./views/home'))
 const Presale = lazy(() => import('./views/pre-sale'))
+const NotFound = lazy(() => import('./views/NotFound'))
 
 const App: React.FC = () => {
 	return (
@@ -22,6 +23,7 @@ const App: React.FC = () => {
 				<Switch>
 					<Route path='/' exact component={Home} />
 					<Route path='/pre-sale' component={Presale} />
+					<Route component={NotFound} />
 				</Switch>
 			</SuspenseWithChunkError>
 		</Router>

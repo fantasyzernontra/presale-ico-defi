@@ -10,6 +10,7 @@ const OceanContainer = styled.div`
 	bottom: 0;
 	left: 0;
 	background: #015871;
+	z-index: -10;
 `
 
 const waveAnim = () => keyframes` 
