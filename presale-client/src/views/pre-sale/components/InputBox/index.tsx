@@ -71,8 +71,8 @@ const Input = styled.input`
 type Props = {
 	label: string
 	token_name: string
-	value: string
-	onChange: Dispatch<SetStateAction<string>>
+	value: number
+	onChange: Dispatch<SetStateAction<number>>
 }
 
 const InputBox: React.FC<Props> = ({ label, token_name, value, onChange }: Props) => {
@@ -80,7 +80,7 @@ const InputBox: React.FC<Props> = ({ label, token_name, value, onChange }: Props
 		<InputContainer>
 			<Label>{label}</Label>
 			<Container flexDirec='row' align='flex-end' justify='center'>
-				<Input type='number' placeholder='0.0' value={value} onChange={(e) => onChange(e.target.value.toString())} />
+				<Input type='number' placeholder='0.0' value={value} onChange={(e) => onChange(parseInt(e.target.value))} />
 				<TokenLabel>{token_name}</TokenLabel>
 			</Container>
 		</InputContainer>

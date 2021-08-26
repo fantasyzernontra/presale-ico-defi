@@ -6,13 +6,18 @@ import { useWeb3React } from '@web3-react/core'
 
 import { ConnectorNames } from '../config/constants/types'
 
-const Button = styled.div`
+interface ButtonProps {
+	disabled?: boolean
+}
+
+const Button = styled.div<ButtonProps>`
 	display: flex;
 	align-items: center;
 	justify-content: center;
 	text-align: center;
 	color: #fff;
-	background-color: #5dced4;
+	background-color: ${({ disabled }) => (!disabled ? '#1e797e' : '#5dced4')};
+	pointer-events: ${({ disabled }) => (!disabled ? 'none' : '')};
 	padding: 20;
 	border-radius: 15px;
 	width: 90%;
@@ -30,7 +35,11 @@ const Button = styled.div`
 	}
 `
 
-const ConnectWalletButton = (props) => {
+type Props = {
+	canBuyNonToken: boolean
+}
+
+const ConnectWalletButton: React.FC<Props> = ({ canBuyNonToken, ...props }) => {
 	const { active } = useWeb3React()
 	const { signin, signout } = useAuth()
 
@@ -40,6 +49,7 @@ const ConnectWalletButton = (props) => {
 				!active ? signin(ConnectorNames['Injected']) : signout()
 			}}
 			{...props}
+			disabled={canBuyNonToken}
 		>
 			{!active ? 'Connect Wallet' : 'Enter an amount'}
 		</Button>
