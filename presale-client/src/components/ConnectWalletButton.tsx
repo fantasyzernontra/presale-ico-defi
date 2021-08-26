@@ -17,9 +17,12 @@ const Button = styled.div`
 	border-radius: 7px;
 	width: 200px;
 	height: 40px;
+	transition: all 0.5s;
+	font-weight: 400;
 
 	:hover {
 		cursor: pointer;
+		background-color: #023644;
 	}
 `
 

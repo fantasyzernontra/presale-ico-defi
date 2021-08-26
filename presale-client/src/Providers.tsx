@@ -4,10 +4,12 @@ import { HelmetProvider } from 'react-helmet-async'
 
 import { getLibrary } from './utils/web3React'
 
+const helmetContext = {}
+
 const Providers: React.FC = ({ children }) => {
 	return (
 		<Web3ReactProvider getLibrary={getLibrary}>
-			<HelmetProvider>{children}</HelmetProvider>
+			<HelmetProvider context={helmetContext}>{children}</HelmetProvider>
 		</Web3ReactProvider>
 	)
 }

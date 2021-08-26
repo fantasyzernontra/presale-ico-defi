@@ -12,7 +12,7 @@ import history from './routerHistory'
 
 // Views
 const Home = lazy(() => import('./views/home'))
-const Presale = lazy(() => import('./views/pre-sale'))
+const PreSell = lazy(() => import('./views/pre-sell'))
 const NotFound = lazy(() => import('./views/NotFound'))
 
 const App: React.FC = () => {
@@ -22,7 +22,7 @@ const App: React.FC = () => {
 			<SuspenseWithChunkError fallback={<Spinner />}>
 				<Switch>
 					<Route path='/' exact component={Home} />
-					<Route path='/pre-sale' component={Presale} />
+					<Route path='/pre-sale' component={PreSell} />
 					<Route component={NotFound} />
 				</Switch>
 			</SuspenseWithChunkError>
