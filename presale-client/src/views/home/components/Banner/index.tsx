@@ -7,6 +7,7 @@ import styled from 'styled-components'
 const Title = styled.div`
 	color: #015871;
 	font-size: 28px;
+	font-weight: 600;
 
 	@media only screen and ${devices.sm} {
 		font-size: 36px;
@@ -37,7 +38,7 @@ const Banner: React.FC = () => {
 	return (
 		<BannerContainer justify='center' align='center' mb={50}>
 			<Title>Welcome to NON Token</Title>
-			<Title>Crowsed Sale Site</Title>
+			<Title>Crowed Sale Site</Title>
 		</BannerContainer>
 	)
 }

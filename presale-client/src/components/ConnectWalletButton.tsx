@@ -12,17 +12,21 @@ const Button = styled.div`
 	justify-content: center;
 	text-align: center;
 	color: #fff;
-	background-color: #015871;
+	background-color: #5dced4;
 	padding: 20;
-	border-radius: 7px;
-	width: 200px;
-	height: 40px;
+	border-radius: 15px;
+	width: 90%;
+	height: 50px;
 	transition: all 0.5s;
-	font-weight: 400;
+	font-weight: 600;
+	font-size: 14px;
+	margin: 0 auto;
+	margin-top: 20px;
+	border-color: transparent;
 
 	:hover {
 		cursor: pointer;
-		background-color: #023644;
+		background-color: #4ca9ad;
 	}
 `
 
@@ -37,7 +41,7 @@ const ConnectWalletButton = (props) => {
 			}}
 			{...props}
 		>
-			{!active ? 'Connect Wallet' : 'Sign Out'}
+			{!active ? 'Connect Wallet' : 'Enter an amount'}
 		</Button>
 	)
 }
