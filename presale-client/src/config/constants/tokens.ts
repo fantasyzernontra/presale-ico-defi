@@ -52,8 +52,9 @@ const tokens = {
 	non: {
 		symbol: 'NON',
 		address: {
-			97: '0x257D4Ab7f9a29041F2843dB5a82e7a2cf25072Ee',
+			97: '0x30E8614BA4d622ed06D6500Bf9CF58a7Cc6c9d40',
 			56: '',
+			0: '0x5FbDB2315678afecb367f032d93F642f64180aa3',
 		},
 		decimals: 18,
 	},

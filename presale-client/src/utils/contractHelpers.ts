@@ -2,7 +2,7 @@ import { ethers } from 'ethers'
 import { simpleRpcProvider } from './providers'
 
 // Addresses
-import { getAddress, getCrowedSaleAddress, getNonToken } from './addressesHelpers'
+import { getCrowedSaleAddress, getNonToken } from './addressesHelpers'
 
 // ABI
 import crowedSaleABI from '../config/abi/CrowedSale.json'

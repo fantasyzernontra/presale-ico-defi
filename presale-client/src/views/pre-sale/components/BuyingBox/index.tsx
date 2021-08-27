@@ -1,14 +1,19 @@
-import React, { useState, useEffect, useCallback } from 'react'
+import React, { useState, useEffect } from 'react'
 import Container from '../../../../components/Layout/Container'
 import InputBox from '../InputBox/index'
 import ConnectWalletButton from '../../../../components/ConnectWalletButton'
+import Spinner from '../../../../components/Loader/Spinner'
 
-import { useWeb3React } from '@web3-react/core'
-import { useCrowedSale, useNonToken } from '../../../../hooks/useContract'
-import { useTokenPrice } from '../../../../hooks/useTokenPrice'
-import { ethers } from 'ethers'
 import styled from 'styled-components'
 import { devices } from '../../../../styles/Breakpoints'
+import { ethers } from 'ethers'
+
+import useActiveWeb3React from '../../../../hooks/useActiveWeb3React'
+import { useCrowedSale } from '../../../../hooks/useContract'
+import { useTokenPrice } from '../../../../hooks/useTokenPrice'
+import { useSoldOut } from '../../../../hooks/useSoldOut'
+import useTotalSupply from '../../../../hooks/useTotalSupply'
+import useCrowedSaleInfo from '../../../../hooks/useCrowedSale'
 
 const StyledBox = styled.div`
 	display: flex;
@@ -22,7 +27,7 @@ const StyledBox = styled.div`
 
 	@media only screen and ${devices.md} {
 		width: 420px;
-		height: 550px;
+		height: 580px;
 		padding-bottom: 0;
 	}
 `
@@ -55,11 +60,22 @@ const Description = styled.p`
 		margin-top: 25px;
 	}
 
-	:nth-of-type(5) {
+	:nth-of-type(6) {
 		margin-top: 0px;
 		margin-bottom: 10px;
 		color: #b9b9b9;
 	}
+`
+
+const Warning = styled.p`
+	line-height: 15px;
+	margin: 0;
+	padding-left: 50px;
+	font-size: 14px;
+	text-align: start;
+	color: #f65f5f;
+	font-weight: 400;
+	height: 10px;
 `
 
 const HorizontalLine = styled.div`
@@ -76,50 +92,66 @@ type Props = {
 }
 
 const BuyingBox: React.FC<Props> = ({ triedEager }) => {
+	const { library } = useActiveWeb3React()
+	const { totalSupply } = useTotalSupply()
+	const { info } = useCrowedSaleInfo()
+	const { soldOut } = useSoldOut()
 	const crowedSale = useCrowedSale()
-	const nonToken = useNonToken()
-	const { account } = useWeb3React()
 
-	const [BNB_amount, setBNBAmount] = useState<number>(NaN)
-	const [NON_amount, setNONAmount] = useState<number>(NaN)
-	const [totalSupply, setTotalSupply] = useState<string>('Loading...')
+	const [BNB_amount, setBNBAmount] = useState<string>('')
+	const [NON_amount, setNONAmount] = useState<string>('')
 	const [canBuyNonToken, setCanBuyNonToken] = useState<boolean>(false)
-	const [price, setPrice] = useState<string>('Loading...')
-	const { bnb, non } = useTokenPrice(BNB_amount, NON_amount)
+	const [hasEverPassTheCondition, setHasEverPassTheCondition] = useState<boolean>(false)
+	const [isPending, setIsPending] = useState<boolean>(false)
+	const { non } = useTokenPrice(BNB_amount)
 
-	const fetchCrowedSaleInfo = useCallback(async () => {
-		const info = await crowedSale.info()
-		const price = ethers.utils.formatEther(info.price)
-		setPrice(price)
-	}, [crowedSale])
-
-	useEffect(() => {
-		if (triedEager && nonToken && account) {
-			nonToken.totalSupply().then((val) => {
-				setTotalSupply(ethers.utils.formatEther(val))
+	const BuyingToken = async () => {
+		setIsPending(true)
+		try {
+			await crowedSale.connect(library.getSigner()).purchaseToken({
+				gasLimit: 210000,
+				value: ethers.utils.parseUnits(BNB_amount),
 			})
-			fetchCrowedSaleInfo()
+		} catch (err) {
+			console.log(err)
 		}
-	}, [nonToken, triedEager, fetchCrowedSaleInfo, account])
+		setIsPending(false)
+		window.location.reload()
+	}
 
 	useEffect(() => {
-		if (!isNaN(BNB_amount) || !isNaN(NON_amount)) {
+		setNONAmount(non)
+	}, [non])
+
+	// Exchanging Validation
+	useEffect(() => {
+		if (parseFloat(BNB_amount) >= 0.25) {
 			setCanBuyNonToken(true)
-		} else if (isNaN(BNB_amount) || isNaN(NON_amount)) setCanBuyNonToken(false)
-	}, [BNB_amount, NON_amount, bnb, non])
+			setHasEverPassTheCondition(true)
+		} else if (BNB_amount === '' || isNaN(parseFloat(BNB_amount)) || parseFloat(BNB_amount) < 0.25)
+			setCanBuyNonToken(false)
+
+		return () => {}
+	}, [BNB_amount])
+
+	if (isPending) return <Spinner />
 
 	return (
 		<Container align='center' justify='center'>
 			<StyledBox>
 				<Title>Pre-sale NON TOKEN</Title>
 				<Description>Buying NON Token into your wallet</Description>
-				<Description>Total Supply: {totalSupply}</Description>
-				<Description>Price: {price}</Description>
+				<Description>Total Supply: {totalSupply ?? 'Loading...'}</Description>
+				<Description>Price: {info ? info.price + ' BNB for 1 NON' : 'Loading...'}</Description>
+				<Description>Sold Out: {soldOut ? soldOut + ' NON TOKEN' : 'Loading...'}</Description>
 				<Description>*NON Token based on Binance Smart Chain Testnet</Description>
 				<HorizontalLine />
 				<InputBox label='From' token_name='BNB' value={BNB_amount} onChange={setBNBAmount} />
-				<InputBox label='To' token_name='NON' value={NON_amount} onChange={setNONAmount} />
-				<ConnectWalletButton canBuyNonToken={canBuyNonToken} />
+				<InputBox label='To' token_name='NON' value={NON_amount} readOnly />
+				<Warning>
+					{hasEverPassTheCondition && !canBuyNonToken && info ? `Enter the amount at least ${info.price} BNB` : ''}
+				</Warning>
+				<ConnectWalletButton canBuyNonToken={canBuyNonToken} BuyingToken={BuyingToken} />
 			</StyledBox>
 		</Container>
 	)

@@ -2,8 +2,6 @@ import React, { SetStateAction, Dispatch } from 'react'
 import Container from '../../../../components/Layout/Container'
 import styled from 'styled-components'
 
-import { devices } from '../../../../styles/Breakpoints'
-
 const InputContainer = styled.div`
 	display: flex;
 	flex-direction: column;
@@ -29,7 +27,7 @@ const TokenLabel = styled.p`
 	font-size: 14px;
 `
 
-const Input = styled.input`
+const Input = styled.input<{ readOnly: boolean }>`
 	background-color: transparent;
 	border: 0;
 	font-size: 14px;
@@ -39,6 +37,7 @@ const Input = styled.input`
 	color: #b9b9b9;
 	width: 90%;
 	height: auto;
+	pointer-events: ${({ readOnly }) => (readOnly ? 'none' : '')};
 
 	::-webkit-outer-spin-button,
 	::-webkit-inner-spin-button {
@@ -69,18 +68,25 @@ const Input = styled.input`
 `
 
 type Props = {
-	label: string
-	token_name: string
-	value: number
-	onChange: Dispatch<SetStateAction<number>>
+	label?: string
+	token_name?: string
+	value?: string
+	onChange?: Dispatch<SetStateAction<string>>
+	readOnly?: boolean
 }
 
-const InputBox: React.FC<Props> = ({ label, token_name, value, onChange }: Props) => {
+const InputBox: React.FC<Props> = ({ label, token_name, value, onChange, readOnly }: Props) => {
 	return (
 		<InputContainer>
 			<Label>{label}</Label>
 			<Container flexDirec='row' align='flex-end' justify='center'>
-				<Input type='number' placeholder='0.0' value={value} onChange={(e) => onChange(parseInt(e.target.value))} />
+				<Input
+					type='text'
+					placeholder='0.0'
+					value={value}
+					onChange={(e) => onChange(e.target.value)}
+					readOnly={readOnly}
+				/>
 				<TokenLabel>{token_name}</TokenLabel>
 			</Container>
 		</InputContainer>

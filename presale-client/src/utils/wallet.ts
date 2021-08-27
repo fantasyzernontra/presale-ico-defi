@@ -7,8 +7,6 @@ declare global {
 	}
 }
 
-console.log(nodes)
-
 export const setUpNetwork = async () => {
 	const provider: any = window.ethereum
 

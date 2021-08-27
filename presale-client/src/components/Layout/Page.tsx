@@ -3,8 +3,6 @@ import Container from './Container'
 
 import styled from 'styled-components'
 
-import { devices } from '../../styles/Breakpoints'
-
 const StyledPage = styled(Container)`
 	display: flex;
 	flex-direction: column;
