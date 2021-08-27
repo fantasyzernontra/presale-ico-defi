@@ -38,7 +38,7 @@ const Banner: React.FC = () => {
 	return (
 		<BannerContainer justify='center' align='center' mb={50}>
 			<Title>Welcome to NON Token</Title>
-			<Title>Crowed Sale Site</Title>
+			<Title>Token Pre-Sale Site</Title>
 		</BannerContainer>
 	)
 }
