@@ -4,4 +4,4 @@
 
 ### Crowed Sale Address: `0x76D269dC0C537323F8D3b628d2C10Aa9Fce0C1ea`
 
-### Network: `BSC Testnet - https://data-seed-prebsc-1-s1.binance.org:8545/`
+### Network: `BSC Testnet`
