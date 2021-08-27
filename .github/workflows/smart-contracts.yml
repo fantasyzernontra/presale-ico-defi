@@ -1,10 +1,9 @@
-name: NON Token Crowed Sale Smart Contracts Deployment
+name: NON Token Pre-sale Smart Contracts Deployment 🚀🌈🚀🌈
 
 on:
   # push:
   #   branches:
   #     - master
-  # pull_request:
 
 jobs:
   test:
