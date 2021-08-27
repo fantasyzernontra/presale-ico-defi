@@ -79,18 +79,27 @@ contract CrowedSale is Ownable {
         purchaseValidation
         returns (bool)
     {
+        // CASE: Users are not allowed to buy NON Token with decimals cases.
         // Excess Amount
-        uint256 excessAmount = msg.value % info.price;
+        // uint256 excessAmount = msg.value % info.price;
         // Amount of purchase value
-        uint256 purchaseAmount = SafeMath.sub(msg.value, excessAmount);
+        // uint256 purchaseAmount = SafeMath.sub(msg.value, excessAmount);
+        // Amount of tokens
+        // uint256 tokensAmount = SafeMath.div(purchaseAmount, info.price);
+
+        // CASE: Users are allowed to buy NON Token with decimals cases.
+        // Amount of Native Token that are sent
+        uint256 purchaseAmount = msg.value;
         // Amount of tokens
         uint256 tokensAmount = SafeMath.div(purchaseAmount, info.price);
 
-        address payable sender = payable(_msgSender());
+        // CASE: Users are not allowed to buy NON Token with decimals cases.
+        // address payable sender = payable(_msgSender());
 
-        if (excessAmount > 0) {
-            sender.transfer(excessAmount);
-        }
+        // CASE: Users are not allowed to buy NON Token with decimals cases.
+        // if (excessAmount > 0) {
+        //     sender.transfer(excessAmount);
+        // }
 
         sold = sold.add(tokensAmount);
         non.transfer(_msgSender(), purchaseAmount);

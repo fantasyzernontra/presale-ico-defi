@@ -6,6 +6,7 @@ export type BigintIsh = JSBI | bigint | string
 export enum ChainId {
 	MAINNET = 56,
 	BSC_TESTNET = 97,
+	DEBUG = 0,
 }
 
 // exports for internal consumption

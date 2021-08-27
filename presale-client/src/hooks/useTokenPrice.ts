@@ -1,16 +1,9 @@
-import React, { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 
-export const useTokenPrice = (bnb_amount: number, non_amount: number) => {
-	const [bnb, setBNB] = useState<number>(0)
-	const [non, setNON] = useState<number>(0)
+export const useTokenPrice = (bnb_amount: string) => {
+	const [non, setNON] = useState<string>('0.0')
 
-	useEffect(() => {
-		const tempBNB = bnb_amount / 0.25
-		const tempNON = non_amount * 0.25
+	useEffect(() => setNON(bnb_amount !== '' ? (parseFloat(bnb_amount) / 0.25).toString() : '0'), [bnb_amount])
 
-		setBNB(tempBNB)
-		setNON(tempNON)
-	}, [bnb_amount, non_amount])
-
-	return { bnb, non }
+	return { non }
 }

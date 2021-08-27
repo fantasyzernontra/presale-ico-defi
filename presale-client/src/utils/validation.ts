@@ -3,7 +3,7 @@ import warning from 'tiny-warning'
 import JSBI from 'jsbi'
 import { getAddress } from '@ethersproject/address'
 
-import { BigintIsh, ZERO, ONE, TWO, THREE, SolidityType, SOLIDITY_TYPE_MAXIMA } from './solidity-constant'
+import { BigintIsh, ZERO, SolidityType, SOLIDITY_TYPE_MAXIMA } from './solidity-constant'
 
 export function validateSolidityTypeInstance(value: JSBI, solidityType: SolidityType): void {
 	invariant(JSBI.greaterThanOrEqual(value, ZERO), `${value} is not a ${solidityType}.`)
