@@ -2,6 +2,7 @@ import React from 'react'
 import Page from '../../components/Layout/Page'
 import Container from '../../components/Layout/Container'
 import BuyingBox from './components/BuyingBox'
+import PreSaleInfoBox from './components/Presal-Info-Box'
 
 import { useEagerConnect } from '../../hooks/useEagerConnect'
 import { useInactiveListener } from '../../hooks/useInactiveListener'
@@ -13,8 +14,9 @@ const PreSell: React.FC = () => {
 
 	return (
 		<Page>
-			<Container align='center' justify='center' isHeightFullScreen>
+			<Container align='center' justify='center' isHeightFullScreen row_gap={30}>
 				<BuyingBox triedEager={triedEager} />
+				<PreSaleInfoBox />
 			</Container>
 		</Page>
 	)

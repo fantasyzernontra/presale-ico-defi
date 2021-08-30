@@ -17,13 +17,17 @@ interface ContainerProps {
 	align?: string
 	justify?: string
 	isHeightFullScreen?: boolean
+	isMinHeightFullScreen?: boolean
+	col_gap?: number
+	row_gap?: number
 }
 
 const ContainerStyle = styled.div<ContainerProps>`
 	display: flex;
 	flex-direction: ${({ flexDirec }) => flexDirec ?? 'column'};
 	width: ${({ width }) => width ?? '100%'};
-	height: ${({ isHeightFullScreen }) => (isHeightFullScreen ? '100vh' : 'auto')};
+	min-height: ${({ isHeightFullScreen }) => (isHeightFullScreen ? '100vh' : 'auto')};
+	/* height: ${({ isMinHeightFullScreen }) => (isMinHeightFullScreen ? '100vh' : 'auto')}; */
 	align-items: ${({ align }) => (align ? align : 'flex-start')};
 	justify-content: ${({ justify }) => (justify ? justify : 'flex-start')};
 	margin: ${({ margin }) => (margin ? `${margin?.y}px ${margin?.x}px` : '0 0')};
@@ -36,6 +40,8 @@ const ContainerStyle = styled.div<ContainerProps>`
 	padding-bottom: ${({ pb }) => `${pb}px` ?? '0px'};
 	padding-left: ${({ pl }) => `${pl}px` ?? '0px'};
 	padding-right: ${({ pr }) => `${pr}px` ?? '0px'};
+	column-gap: ${({ col_gap }) => `${col_gap}px` ?? '0px'};
+	row-gap: ${({ row_gap }) => `${row_gap}px` ?? '0px'};
 `
 
 const Container: React.FC<ContainerProps> = ({ children, ...props }) => {
