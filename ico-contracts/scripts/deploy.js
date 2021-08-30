@@ -10,7 +10,7 @@ async function main() {
 	const PRICE = HARDHAT_NETWORK === 'mainnet' ? process.env.PRICE : '0.25'
 
 	console.log('Deploying contracts with the account:', deployer.address)
-	console.log('Remaing account balance: ', (await deployer.getBalance()).toString())
+	console.log('Remaining account balance: ', (await deployer.getBalance()).toString())
 
 	const NON = await ethers.getContractFactory('NonToken')
 	// Deploying NON Token

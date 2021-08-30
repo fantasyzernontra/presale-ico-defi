@@ -9,6 +9,8 @@ import "@openzeppelin/contracts/utils/math/SafeMath.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/utils/Address.sol";
 
+import "hardhat/console.sol";
+
 contract CrowedSale is Ownable {
     using SafeBEP20 for IBEP20;
     using SafeMath for uint256;
@@ -102,8 +104,8 @@ contract CrowedSale is Ownable {
         // }
 
         sold = sold.add(tokensAmount);
-        non.transfer(_msgSender(), purchaseAmount);
-        info.fund.transfer(purchaseAmount);
+        non.transfer(_msgSender(), tokensAmount * (10**18));
+        forwardFunds(purchaseAmount);
         emit CrowedSalePurchase(_msgSender(), tokensAmount);
         return true;
     }
