@@ -1,7 +1,7 @@
 # NON Tokens's Crowed Sale
 
-### NON Token Address: `0x30E8614BA4d622ed06D6500Bf9CF58a7Cc6c9d40`
+### NON Token Address: `0x2be04F620a043d5c96C838F611aAA9aF0C3d3023`
 
-### Pre-Sale Address: `0x76D269dC0C537323F8D3b628d2C10Aa9Fce0C1ea`
+### Pre-Sale Address: `0x5fB003B5A8f88BeC5a25d9d7e77cDfAadf3cFFb0`
 
 ### Network: `BSC Testnet`

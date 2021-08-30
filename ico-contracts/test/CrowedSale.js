@@ -22,7 +22,7 @@ beforeEach(async () => {
 
 	CrowedSaleContract = await ethers.getContractFactory('CrowedSale')
 	crowedSale = await CrowedSaleContract.deploy(addr1.address, token.address, ToWei(TOKEN_CAP), ToWei(PRICE))
-	
+
 	await token.connect
 
 	// Transfers ownership of NON Token to Crowed Sale.
@@ -48,16 +48,19 @@ describe('Crowed Sale', () => {
 	it('Purchasing should successful and the beneficiary should recieve the exact amount of NON Token', async () => {
 		const [owner, addr1, addr2] = await ethers.getSigners()
 		const prov = await ethers.getDefaultProvider()
-		const buyingAmount = '1000'
+		const nativeTokenGiven = '1000'
+		const tokensAmount = (parseFloat(nativeTokenGiven) / parseFloat(PRICE)).toString()
 
-		await crowedSale.connect(addr2).purchaseToken({ value: ToWei(buyingAmount) })
+		await crowedSale.connect(addr2).purchaseToken({ value: ToWei(nativeTokenGiven) })
 
-		const expectedRemainingInTokenCap = (parseInt(TOKEN_CAP) - parseInt(buyingAmount)).toString()
+		const expectedRemainingInTokenCap = (parseFloat(TOKEN_CAP) - parseFloat(tokensAmount)).toString()
+
+		const remainingBalance = await token.balanceOf(crowedSale.address)
 
 		// Remaining NON token cap.
-		expect(await token.balanceOf(crowedSale.address)).to.equal(ToWei(expectedRemainingInTokenCap))
+		expect(remainingBalance).to.equal(ToWei(expectedRemainingInTokenCap))
 		// New amount of NON Token.
-		expect(await token.balanceOf(addr2.address)).to.equal(ToWei(buyingAmount))
+		expect(await token.balanceOf(addr2.address)).to.equal(ToWei(tokensAmount))
 
 		const balance = await prov.getBalance(addr1.address)
 	})

@@ -134,6 +134,7 @@ abstract contract BEP20 is IBEP20, Ownable {
             amount,
             "BEP20: transfer amount exceeds balance"
         );
+
         _balances[recipient] = _balances[recipient].add(amount);
 
         emit Transfer(sender, recipient, amount);
